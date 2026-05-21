@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Askep Case Generator - NersLab</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">
+                <i class="fas fa-heartbeat"></i> NersLab
+            </a>
+            <button class="nav-toggle" id="navToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Beranda</a></li>
+                <li><a href="askep.html" class="nav-link active"><i class="fas fa-file-medical"></i> Askep</a></li>
+                <li><a href="kuis.html" class="nav-link"><i class="fas fa-question-circle"></i> Kuis</a></li>
+                <li><a href="kalkulator.html" class="nav-link"><i class="fas fa-calculator"></i> Kalkulator</a></li>
+                <li><a href="osce.html" class="nav-link"><i class="fas fa-clipboard-check"></i> OSCE</a></li>
+                <li><a href="logbook.html" class="nav-link"><i class="fas fa-book"></i> Logbook</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1><i class="fas fa-file-medical"></i> Askep Case Generator</h1>
+        <p>Latihan dokumentasi asuhan keperawatan dengan bank kasus pasien</p>
+    </div>
+
+    <div class="page-content">
+        <!-- Case Selection -->
+        <div class="card">
+            <h3><i class="fas fa-folder-open"></i> Pilih Kasus</h3>
+            <div class="form-group">
+                <label for="caseCategory">Kategori Kasus:</label>
+                <select id="caseCategory">
+                    <option value="">-- Pilih Kategori --</option>
+                    <option value="dewasa">Keperawatan Dewasa (KMB)</option>
+                    <option value="anak">Keperawatan Anak</option>
+                    <option value="maternitas">Keperawatan Maternitas</option>
+                    <option value="lansia">Keperawatan Gerontik</option>
+                    <option value="gawatdarurat">Gawat Darurat</option>
+                </select>
+            </div>
+            <div id="caseList" class="case-list" style="display:none;">
+                <label>Pilih Kasus:</label>
+                <div id="caseButtons" class="btn-group" style="margin-top:8px;"></div>
+            </div>
+        </div>
+
+        <!-- Case Display -->
+        <div id="caseDisplay" class="card" style="display:none;">
+            <h3><i class="fas fa-user-injured"></i> Skenario Kasus</h3>
+            <div id="caseScenario" class="alert alert-info"></div>
+            <div class="case-patient-info" id="patientInfo"></div>
+        </div>
+
+        <!-- Askep Form -->
+        <div id="askepForm" style="display:none;">
+            <div class="card">
+                <h3><i class="fas fa-search"></i> 1. Pengkajian</h3>
+                <div class="form-group">
+                    <label for="dataSubjektif">Data Subjektif (keluhan pasien):</label>
+                    <textarea id="dataSubjektif" placeholder="Tuliskan data subjektif berdasarkan kasus..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="dataObjektif">Data Objektif (hasil pemeriksaan):</label>
+                    <textarea id="dataObjektif" placeholder="Tuliskan data objektif berdasarkan kasus..."></textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-diagnoses"></i> 2. Diagnosis Keperawatan</h3>
+                <div class="form-group">
+                    <label for="masalahKeperawatan">Masalah Keperawatan (rujukan SDKI):</label>
+                    <textarea id="masalahKeperawatan" placeholder="Contoh: Nyeri Akut b.d. agen pencedera fisiologis d.d. pasien mengeluh nyeri..."></textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-bullseye"></i> 3. Luaran Keperawatan (SLKI)</h3>
+                <div class="form-group">
+                    <label for="tujuanLuaran">Tujuan dan Kriteria Hasil:</label>
+                    <textarea id="tujuanLuaran" placeholder="Contoh: Setelah dilakukan tindakan keperawatan 3x24 jam, tingkat nyeri menurun..."></textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-hand-holding-medical"></i> 4. Intervensi Keperawatan (SIKI)</h3>
+                <div class="form-group">
+                    <label for="intervensi">Intervensi:</label>
+                    <textarea id="intervensi" placeholder="Tuliskan intervensi keperawatan..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="rasional">Rasional:</label>
+                    <textarea id="rasional" placeholder="Jelaskan rasional dari setiap intervensi..."></textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-clipboard-list"></i> 5. Evaluasi (SOAP)</h3>
+                <div class="form-group">
+                    <label for="evalS">S (Subjektif):</label>
+                    <textarea id="evalS" placeholder="Respon subjektif pasien setelah tindakan..." style="min-height:60px;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="evalO">O (Objektif):</label>
+                    <textarea id="evalO" placeholder="Data objektif setelah tindakan..." style="min-height:60px;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="evalA">A (Analisis):</label>
+                    <textarea id="evalA" placeholder="Analisis: masalah teratasi/belum..." style="min-height:60px;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="evalP">P (Planning):</label>
+                    <textarea id="evalP" placeholder="Rencana tindak lanjut..." style="min-height:60px;"></textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="btn-group">
+                    <button class="btn btn-primary" id="btnCheck"><i class="fas fa-check-circle"></i> Cek Jawaban</button>
+                    <button class="btn btn-success" id="btnShowAnswer"><i class="fas fa-lightbulb"></i> Lihat Contoh Jawaban</button>
+                    <button class="btn btn-warning" id="btnReset"><i class="fas fa-redo"></i> Reset Form</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Answer Display -->
+        <div id="answerDisplay" class="card" style="display:none;">
+            <h3><i class="fas fa-lightbulb"></i> Contoh Jawaban</h3>
+            <div id="answerContent"></div>
+        </div>
+
+        <!-- Feedback -->
+        <div id="feedbackDisplay" class="card" style="display:none;">
+            <h3><i class="fas fa-comments"></i> Feedback</h3>
+            <div id="feedbackContent"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 NersLab. Platform Edukasi Mahasiswa Keperawatan Indonesia.</p>
+        </div>
+    </footer>
+
+    <script src="../js/askep.js"></script>
+    <script>
+        document.getElementById('navToggle').addEventListener('click', () => {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
