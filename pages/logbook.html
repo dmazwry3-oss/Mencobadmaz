@@ -6,39 +6,36 @@
     <title>Logbook Praktik Klinik - NersLab</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="../index.html" class="nav-logo">
-                <i class="fas fa-heartbeat"></i> NersLab
-            </a>
-            <button class="nav-toggle" id="navToggle">
-                <i class="fas fa-bars"></i>
-            </button>
+            <a href="../index.html" class="nav-logo"><i class="fas fa-heartbeat"></i> NersLab</a>
+            <button class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></button>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Beranda</a></li>
                 <li><a href="askep.html" class="nav-link"><i class="fas fa-file-medical"></i> Askep</a></li>
-                <li><a href="kuis.html" class="nav-link"><i class="fas fa-question-circle"></i> Kuis</a></li>
+                <li><a href="kuis.html" class="nav-link"><i class="fas fa-brain"></i> Kuis</a></li>
                 <li><a href="kalkulator.html" class="nav-link"><i class="fas fa-calculator"></i> Kalkulator</a></li>
                 <li><a href="osce.html" class="nav-link"><i class="fas fa-clipboard-check"></i> OSCE</a></li>
-                <li><a href="logbook.html" class="nav-link active"><i class="fas fa-book"></i> Logbook</a></li>
+                <li><a href="logbook.html" class="nav-link active"><i class="fas fa-book-medical"></i> Logbook</a></li>
             </ul>
         </div>
     </nav>
 
     <div class="page-header">
-        <h1><i class="fas fa-book"></i> Logbook Praktik Klinik</h1>
-        <p>Catatan aktivitas praktik, checklist kompetensi, dan refleksi harian</p>
+        <h1><i class="fas fa-book-medical"></i> Logbook Praktik Klinik</h1>
+        <p>Catatan aktivitas, checklist kompetensi, refleksi harian, dan export data</p>
     </div>
 
+
     <div class="page-content">
-        <!-- Tabs -->
         <div class="tabs">
-            <button class="tab-btn active" data-tab="catatan">Catatan Harian</button>
-            <button class="tab-btn" data-tab="kompetensi">Checklist Kompetensi</button>
-            <button class="tab-btn" data-tab="refleksi">Refleksi</button>
-            <button class="tab-btn" data-tab="riwayat">Riwayat</button>
+            <button class="tab-btn active" data-tab="catatan"><i class="fas fa-pen"></i> Catatan</button>
+            <button class="tab-btn" data-tab="kompetensi"><i class="fas fa-tasks"></i> Kompetensi</button>
+            <button class="tab-btn" data-tab="refleksi"><i class="fas fa-lightbulb"></i> Refleksi</button>
+            <button class="tab-btn" data-tab="riwayat"><i class="fas fa-history"></i> Riwayat</button>
         </div>
 
         <!-- Tab: Catatan Harian -->
@@ -58,12 +55,13 @@
                         <option value="Bedah">Ruang Bedah</option>
                         <option value="Interna">Ruang Penyakit Dalam</option>
                         <option value="Anak">Ruang Anak</option>
-                        <option value="Maternitas">Ruang Maternitas/Kebidanan</option>
+                        <option value="Maternitas">Ruang Maternitas</option>
                         <option value="Jiwa">Ruang Jiwa</option>
                         <option value="Puskesmas">Puskesmas/Komunitas</option>
-                        <option value="OK">Kamar Operasi (OK)</option>
+                        <option value="OK">Kamar Operasi</option>
                         <option value="Poliklinik">Poliklinik</option>
                     </select>
+                    <p class="error-msg">Pilih ruangan</p>
                 </div>
                 <div class="form-group">
                     <label for="logShift">Shift:</label>
@@ -74,34 +72,38 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="logAktivitas">Aktivitas/Tindakan yang Dilakukan:</label>
-                    <textarea id="logAktivitas" placeholder="Contoh: Melakukan pengkajian pada Tn. X dengan DM Tipe 2, mengukur GDS, memberikan edukasi diet DM..."></textarea>
+                    <label for="logAktivitas">Aktivitas/Tindakan:</label>
+                    <textarea id="logAktivitas" placeholder="Contoh: Mengukur TTV, memasang infus, memberikan edukasi diet DM..."></textarea>
+                    <p class="error-msg">Isi minimal aktivitas yang dilakukan</p>
                 </div>
                 <div class="form-group">
-                    <label for="logDiagnosis">Kasus/Diagnosis yang Ditemui:</label>
-                    <textarea id="logDiagnosis" placeholder="Contoh: DM Tipe 2, CHF NYHA II, Post Op Appendektomi..." style="min-height:60px;"></textarea>
+                    <label for="logDiagnosis">Kasus/Diagnosis Pasien:</label>
+                    <textarea id="logDiagnosis" placeholder="Contoh: DM Tipe 2, CHF NYHA II..." style="min-height:60px;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="logKeterampilan">Keterampilan yang Dilakukan:</label>
+                    <textarea id="logKeterampilan" placeholder="Contoh: Pemasangan infus, injeksi IM, perawatan luka..." style="min-height:60px;"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="logPembimbing">Nama Pembimbing Klinik:</label>
                     <input type="text" id="logPembimbing" placeholder="Ns. ...">
                 </div>
                 <div class="form-group">
-                    <label for="logCatatan">Catatan Tambahan:</label>
-                    <textarea id="logCatatan" placeholder="Hal-hal yang perlu diingat, feedback dari pembimbing, dll..." style="min-height:60px;"></textarea>
+                    <label for="logCatatan">Catatan Pembimbing/Tambahan:</label>
+                    <textarea id="logCatatan" placeholder="Feedback dari CI, hal yang perlu diperbaiki..." style="min-height:60px;"></textarea>
                 </div>
                 <button class="btn btn-primary" id="btnSimpanLog"><i class="fas fa-save"></i> Simpan Catatan</button>
             </div>
         </div>
 
-        <!-- Tab: Checklist Kompetensi -->
+
+        <!-- Tab: Kompetensi -->
         <div class="tab-content" id="tab-kompetensi">
             <div class="card">
                 <h3><i class="fas fa-tasks"></i> Checklist Kompetensi Klinik</h3>
-                <p style="color:var(--gray-500);margin-bottom:16px;">Tandai kompetensi yang sudah tercapai selama praktik klinik</p>
+                <p style="color:var(--gray-500);font-size:0.85rem;margin-bottom:16px;">Tandai kompetensi yang sudah tercapai selama praktik</p>
                 <div id="kompetensiList"></div>
-                <div style="margin-top:16px;">
-                    <button class="btn btn-success btn-sm" id="btnSaveKompetensi"><i class="fas fa-save"></i> Simpan Progress</button>
-                </div>
+                <button class="btn btn-success btn-sm" id="btnSaveKompetensi" style="margin-top:16px;"><i class="fas fa-save"></i> Simpan Progress</button>
             </div>
             <div class="card">
                 <h3><i class="fas fa-chart-pie"></i> Progress Kompetensi</h3>
@@ -113,51 +115,63 @@
         <div class="tab-content" id="tab-refleksi">
             <div class="card">
                 <h3><i class="fas fa-lightbulb"></i> Refleksi Harian (Model Gibbs)</h3>
-                <p style="color:var(--gray-500);margin-bottom:16px;">Refleksi membantu mengintegrasikan pengalaman klinik menjadi pembelajaran bermakna</p>
+                <p style="color:var(--gray-500);font-size:0.85rem;margin-bottom:16px;">Refleksi membantu mengintegrasikan pengalaman klinik menjadi pembelajaran bermakna</p>
                 <div class="form-group">
                     <label for="refleksiTanggal">Tanggal:</label>
                     <input type="date" id="refleksiTanggal">
                 </div>
                 <div class="form-group">
                     <label for="refleksiDeskripsi"><strong>1. Deskripsi</strong> - Apa yang terjadi?</label>
-                    <textarea id="refleksiDeskripsi" placeholder="Ceritakan pengalaman klinik hari ini secara objektif..."></textarea>
+                    <textarea id="refleksiDeskripsi" placeholder="Ceritakan pengalaman klinik hari ini..."></textarea>
+                    <p class="error-msg">Isi minimal deskripsi pengalaman</p>
                 </div>
                 <div class="form-group">
                     <label for="refleksiPerasaan"><strong>2. Perasaan</strong> - Apa yang saya rasakan?</label>
-                    <textarea id="refleksiPerasaan" placeholder="Bagaimana perasaan Anda saat dan setelah kejadian?" style="min-height:70px;"></textarea>
+                    <textarea id="refleksiPerasaan" placeholder="Perasaan saat dan setelah kejadian..." style="min-height:70px;"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="refleksiEvaluasi"><strong>3. Evaluasi</strong> - Apa yang baik dan kurang baik?</label>
-                    <textarea id="refleksiEvaluasi" placeholder="Aspek positif dan negatif dari pengalaman ini..." style="min-height:70px;"></textarea>
+                    <label for="refleksiEvaluasi"><strong>3. Evaluasi</strong> - Apa yang baik dan kurang?</label>
+                    <textarea id="refleksiEvaluasi" placeholder="Aspek positif dan negatif..." style="min-height:70px;"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="refleksiAnalisis"><strong>4. Analisis</strong> - Mengapa bisa terjadi?</label>
-                    <textarea id="refleksiAnalisis" placeholder="Analisis mengapa hal tersebut terjadi, hubungkan dengan teori..." style="min-height:70px;"></textarea>
+                    <textarea id="refleksiAnalisis" placeholder="Analisis, hubungkan dengan teori..." style="min-height:70px;"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="refleksiKesimpulan"><strong>5. Kesimpulan</strong> - Apa yang saya pelajari?</label>
-                    <textarea id="refleksiKesimpulan" placeholder="Pembelajaran utama dari pengalaman ini..." style="min-height:70px;"></textarea>
+                    <textarea id="refleksiKesimpulan" placeholder="Pembelajaran utama..." style="min-height:70px;"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="refleksiRencana"><strong>6. Rencana Aksi</strong> - Apa yang akan saya lakukan berbeda?</label>
-                    <textarea id="refleksiRencana" placeholder="Rencana perbaikan untuk situasi serupa di masa depan..." style="min-height:70px;"></textarea>
+                    <label for="refleksiRencana"><strong>6. Rencana Aksi</strong> - Apa yang akan berbeda?</label>
+                    <textarea id="refleksiRencana" placeholder="Rencana perbaikan..." style="min-height:70px;"></textarea>
                 </div>
                 <button class="btn btn-primary" id="btnSimpanRefleksi"><i class="fas fa-save"></i> Simpan Refleksi</button>
             </div>
         </div>
+
 
         <!-- Tab: Riwayat -->
         <div class="tab-content" id="tab-riwayat">
             <div class="card">
                 <h3><i class="fas fa-history"></i> Riwayat Catatan & Refleksi</h3>
                 <div class="btn-group" style="margin-bottom:16px;">
-                    <button class="btn btn-sm btn-outline" id="btnExport"><i class="fas fa-download"></i> Export Data</button>
+                    <button class="btn btn-sm btn-primary" id="btnExportPDF"><i class="fas fa-file-pdf"></i> Export PDF</button>
+                    <button class="btn btn-sm btn-success" id="btnExportCSV"><i class="fas fa-file-csv"></i> Export CSV</button>
+                    <button class="btn btn-sm btn-outline" id="btnExportJSON"><i class="fas fa-download"></i> Export JSON</button>
                     <button class="btn btn-sm btn-danger" id="btnClearAll"><i class="fas fa-trash"></i> Hapus Semua</button>
                 </div>
-                <div id="riwayatList"><p style="color:var(--gray-400);text-align:center;">Belum ada catatan tersimpan.</p></div>
+                <div id="riwayatList">
+                    <div class="empty-state">
+                        <i class="fas fa-book-open"></i>
+                        <h4>Belum ada catatan</h4>
+                        <p>Catatan praktik dan refleksi Anda akan muncul di sini setelah disimpan.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+    <div class="toast-container" id="toastContainer"></div>
 
     <footer class="footer">
         <div class="container">

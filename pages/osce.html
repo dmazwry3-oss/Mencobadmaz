@@ -6,34 +6,32 @@
     <title>Simulasi OSCE - NersLab</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="../index.html" class="nav-logo">
-                <i class="fas fa-heartbeat"></i> NersLab
-            </a>
-            <button class="nav-toggle" id="navToggle">
-                <i class="fas fa-bars"></i>
-            </button>
+            <a href="../index.html" class="nav-logo"><i class="fas fa-heartbeat"></i> NersLab</a>
+            <button class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></button>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Beranda</a></li>
                 <li><a href="askep.html" class="nav-link"><i class="fas fa-file-medical"></i> Askep</a></li>
-                <li><a href="kuis.html" class="nav-link"><i class="fas fa-question-circle"></i> Kuis</a></li>
+                <li><a href="kuis.html" class="nav-link"><i class="fas fa-brain"></i> Kuis</a></li>
                 <li><a href="kalkulator.html" class="nav-link"><i class="fas fa-calculator"></i> Kalkulator</a></li>
                 <li><a href="osce.html" class="nav-link active"><i class="fas fa-clipboard-check"></i> OSCE</a></li>
-                <li><a href="logbook.html" class="nav-link"><i class="fas fa-book"></i> Logbook</a></li>
+                <li><a href="logbook.html" class="nav-link"><i class="fas fa-book-medical"></i> Logbook</a></li>
             </ul>
         </div>
     </nav>
 
     <div class="page-header">
         <h1><i class="fas fa-clipboard-check"></i> Simulasi OSCE Keperawatan</h1>
-        <p>Timer station, checklist tindakan, mode latihan & ujian</p>
+        <p>Timer station, checklist tindakan, mode latihan & ujian dengan feedback otomatis</p>
     </div>
 
+
     <div class="page-content">
-        <!-- Station Selection -->
+        <!-- Setup -->
         <div class="card" id="osceSetup">
             <h3><i class="fas fa-list-alt"></i> Pilih Station OSCE</h3>
             <div class="form-group">
@@ -41,21 +39,24 @@
                 <select id="osceStation">
                     <option value="">-- Pilih Station --</option>
                     <option value="cuciTangan">Cuci Tangan (Hand Hygiene)</option>
-                    <option value="ttv">Pemeriksaan Tanda-Tanda Vital (TTV)</option>
-                    <option value="injeksi">Injeksi Intramuskular (IM)</option>
+                    <option value="ttv">Pemeriksaan TTV</option>
+                    <option value="injeksiIM">Injeksi Intramuskular (IM)</option>
+                    <option value="injeksiIV">Injeksi Intravena (IV)</option>
                     <option value="infus">Pemasangan Infus</option>
                     <option value="kateter">Pemasangan Kateter Urine</option>
                     <option value="komunikasi">Komunikasi Terapeutik</option>
                     <option value="oksigen">Pemberian Oksigen</option>
                     <option value="luka">Perawatan Luka</option>
+                    <option value="pemfis">Pemeriksaan Fisik Dasar</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="osceMode">Mode:</label>
                 <select id="osceMode">
-                    <option value="latihan">Latihan (tanpa timer)</option>
-                    <option value="ujian">Ujian (dengan timer 10 menit)</option>
+                    <option value="latihan">Latihan (checklist terlihat)</option>
+                    <option value="ujian">Ujian (checklist tersembunyi sampai selesai)</option>
                 </select>
+                <p class="form-hint">Mode ujian: checklist baru terlihat setelah waktu habis atau Anda selesai.</p>
             </div>
             <div class="form-group">
                 <label for="osceTimer">Waktu Station (menit):</label>
@@ -66,47 +67,68 @@
             </button>
         </div>
 
-        <!-- Timer Display -->
+        <!-- Scenario -->
+        <div class="card" id="scenarioCard" style="display:none;">
+            <h3><i class="fas fa-book-open"></i> Skenario Station</h3>
+            <div id="scenarioText" class="alert alert-info"></div>
+        </div>
+
+        <!-- Timer -->
         <div class="card" id="timerCard" style="display:none;">
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
-                <h3 id="stationTitle"></h3>
-                <span class="badge badge-high" id="modeLabel"></span>
+                <h3 id="stationTitle" style="margin:0;"></h3>
+                <span class="badge badge-primary" id="modeLabel"></span>
             </div>
             <div class="timer-display" id="timerDisplay">10:00</div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="timerProgress" style="width:100%;"></div>
-            </div>
-            <div class="btn-group" style="justify-content:center;margin-top:12px;">
+            <div class="progress-bar"><div class="progress-fill" id="timerProgress" style="width:100%;"></div></div>
+            <div class="btn-group" style="justify-content:center;margin-top:14px;">
                 <button class="btn btn-warning btn-sm" id="btnPause"><i class="fas fa-pause"></i> Pause</button>
                 <button class="btn btn-danger btn-sm" id="btnStop"><i class="fas fa-stop"></i> Selesai</button>
             </div>
         </div>
 
-        <!-- Checklist -->
+
+        <!-- Checklist (shown in latihan, hidden in ujian until done) -->
         <div class="card" id="checklistCard" style="display:none;">
             <h3><i class="fas fa-tasks"></i> Checklist Tindakan</h3>
-            <p style="color:var(--gray-500);margin-bottom:12px;">Centang setiap langkah yang sudah dilakukan</p>
+            <p style="color:var(--gray-500);font-size:0.85rem;margin-bottom:14px;" id="checklistHint">Centang setiap langkah yang sudah dilakukan</p>
             <div id="checklistContainer"></div>
+        </div>
+
+        <!-- Hidden message for exam mode -->
+        <div class="card" id="examHiddenMsg" style="display:none;">
+            <div class="empty-state">
+                <i class="fas fa-eye-slash"></i>
+                <h4>Checklist Tersembunyi (Mode Ujian)</h4>
+                <p>Lakukan tindakan sesuai pengetahuan Anda. Checklist akan ditampilkan setelah Anda menyelesaikan station.</p>
+            </div>
         </div>
 
         <!-- Result -->
         <div class="card" id="osceResult" style="display:none;">
-            <h3><i class="fas fa-chart-bar"></i> Hasil Penilaian</h3>
+            <h3><i class="fas fa-chart-bar"></i> Hasil Penilaian OSCE</h3>
             <div class="score-display">
                 <div class="score-number" id="osceScore">0%</div>
-                <div class="score-label">Skor OSCE</div>
+                <div class="score-label">Skor Station</div>
             </div>
-            <div class="progress-bar" style="margin:16px 0;">
-                <div class="progress-fill" id="osceScoreBar" style="width:0%"></div>
-            </div>
+            <div class="progress-bar" style="margin:16px 0;"><div class="progress-fill" id="osceScoreBar" style="width:0%"></div></div>
             <div id="osceGrade" style="text-align:center;margin-bottom:16px;"></div>
             <div id="osceFeedback"></div>
             <div class="btn-group" style="justify-content:center;margin-top:20px;">
-                <button class="btn btn-primary" id="btnRetryOsce"><i class="fas fa-redo"></i> Ulangi</button>
+                <button class="btn btn-primary" id="btnRetryOsce"><i class="fas fa-redo"></i> Ulangi Station</button>
                 <button class="btn btn-outline" id="btnBackOsce"><i class="fas fa-list"></i> Pilih Station Lain</button>
             </div>
         </div>
+
+        <!-- Review checklist after exam -->
+        <div class="card" id="reviewChecklist" style="display:none;">
+            <h3><i class="fas fa-clipboard-list"></i> Review Checklist (Langkah yang Seharusnya)</h3>
+            <p style="color:var(--gray-500);font-size:0.85rem;margin-bottom:14px;">Bandingkan dengan tindakan yang Anda lakukan</p>
+            <div id="reviewContainer"></div>
+        </div>
     </div>
+
+    <div class="toast-container" id="toastContainer"></div>
 
     <footer class="footer">
         <div class="container">

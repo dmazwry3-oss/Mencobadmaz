@@ -6,57 +6,64 @@
     <title>Kalkulator Obat & Infus - NersLab</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="../index.html" class="nav-logo">
-                <i class="fas fa-heartbeat"></i> NersLab
-            </a>
-            <button class="nav-toggle" id="navToggle">
-                <i class="fas fa-bars"></i>
-            </button>
+            <a href="../index.html" class="nav-logo"><i class="fas fa-heartbeat"></i> NersLab</a>
+            <button class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></button>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Beranda</a></li>
                 <li><a href="askep.html" class="nav-link"><i class="fas fa-file-medical"></i> Askep</a></li>
-                <li><a href="kuis.html" class="nav-link"><i class="fas fa-question-circle"></i> Kuis</a></li>
+                <li><a href="kuis.html" class="nav-link"><i class="fas fa-brain"></i> Kuis</a></li>
                 <li><a href="kalkulator.html" class="nav-link active"><i class="fas fa-calculator"></i> Kalkulator</a></li>
                 <li><a href="osce.html" class="nav-link"><i class="fas fa-clipboard-check"></i> OSCE</a></li>
-                <li><a href="logbook.html" class="nav-link"><i class="fas fa-book"></i> Logbook</a></li>
+                <li><a href="logbook.html" class="nav-link"><i class="fas fa-book-medical"></i> Logbook</a></li>
             </ul>
         </div>
     </nav>
 
     <div class="page-header">
         <h1><i class="fas fa-calculator"></i> Kalkulator Obat & Infus</h1>
-        <p>Hitung dosis obat, tetesan infus, dan konversi satuan dengan penjelasan langkah</p>
+        <p>Hitung dosis, tetesan infus, dan konversi satuan dengan penjelasan langkah-langkah</p>
     </div>
 
+
     <div class="page-content">
+        <div class="alert alert-warning" style="margin-bottom:24px;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span><strong>Disclaimer:</strong> Kalkulator ini hanya untuk latihan edukasi, bukan pengganti instruksi klinis atau arahan tenaga kesehatan profesional.</span>
+        </div>
+
         <!-- Tabs -->
         <div class="tabs">
-            <button class="tab-btn active" data-tab="dosis">Dosis Obat</button>
-            <button class="tab-btn" data-tab="infus">Tetesan Infus</button>
-            <button class="tab-btn" data-tab="konversi">Konversi Satuan</button>
-            <button class="tab-btn" data-tab="latihan">Latihan Soal</button>
+            <button class="tab-btn active" data-tab="dosis"><i class="fas fa-pills"></i> Dosis Obat</button>
+            <button class="tab-btn" data-tab="infus"><i class="fas fa-tint"></i> Tetesan Infus</button>
+            <button class="tab-btn" data-tab="konversi"><i class="fas fa-exchange-alt"></i> Konversi</button>
+            <button class="tab-btn" data-tab="latihan"><i class="fas fa-brain"></i> Latihan Soal</button>
         </div>
 
         <!-- Tab: Dosis Obat -->
         <div class="tab-content active" id="tab-dosis">
             <div class="card">
                 <h3><i class="fas fa-pills"></i> Kalkulator Dosis Obat</h3>
-                <p style="color:var(--gray-500);margin-bottom:16px;">Hitung dosis obat berdasarkan berat badan pasien</p>
+                <p style="color:var(--gray-500);font-size:0.85rem;margin-bottom:18px;">Hitung dosis obat berdasarkan berat badan pasien</p>
                 <div class="form-group">
-                    <label for="dosisPerKg">Dosis per kgBB (mg/kgBB):</label>
-                    <input type="number" id="dosisPerKg" placeholder="Contoh: 10" step="0.1">
+                    <label for="dosisPerKg">Dosis per kgBB (mg/kgBB/hari):</label>
+                    <input type="number" id="dosisPerKg" placeholder="Contoh: 10" step="0.1" min="0">
+                    <p class="form-hint">Lihat di instruksi dokter atau referensi obat</p>
+                    <p class="error-msg">Nilai harus lebih dari 0</p>
                 </div>
                 <div class="form-group">
                     <label for="beratBadan">Berat Badan Pasien (kg):</label>
-                    <input type="number" id="beratBadan" placeholder="Contoh: 60" step="0.1">
+                    <input type="number" id="beratBadan" placeholder="Contoh: 60" step="0.1" min="0.5" max="300">
+                    <p class="error-msg">BB harus antara 0.5 - 300 kg</p>
                 </div>
                 <div class="form-group">
-                    <label for="sediaanObat">Sediaan Obat (mg/tablet atau mg/mL):</label>
-                    <input type="number" id="sediaanObat" placeholder="Contoh: 500" step="0.1">
+                    <label for="sediaanObat">Sediaan Obat (mg per tablet/mL):</label>
+                    <input type="number" id="sediaanObat" placeholder="Contoh: 500" step="0.1" min="0">
+                    <p class="error-msg">Nilai harus lebih dari 0</p>
                 </div>
                 <div class="form-group">
                     <label for="frekuensi">Frekuensi per hari:</label>
@@ -65,6 +72,7 @@
                         <option value="2">2x sehari</option>
                         <option value="3" selected>3x sehari</option>
                         <option value="4">4x sehari</option>
+                        <option value="6">6x sehari (tiap 4 jam)</option>
                     </select>
                 </div>
                 <button class="btn btn-primary" id="btnHitungDosis"><i class="fas fa-calculator"></i> Hitung Dosis</button>
@@ -72,40 +80,45 @@
             </div>
         </div>
 
+
         <!-- Tab: Tetesan Infus -->
         <div class="tab-content" id="tab-infus">
             <div class="card">
                 <h3><i class="fas fa-tint"></i> Kalkulator Tetesan Infus</h3>
-                <p style="color:var(--gray-500);margin-bottom:16px;">Hitung jumlah tetesan per menit (TPM)</p>
+                <p style="color:var(--gray-500);font-size:0.85rem;margin-bottom:18px;">Hitung jumlah tetesan per menit (TPM)</p>
                 <div class="form-group">
                     <label for="volumeInfus">Volume Cairan (mL):</label>
-                    <input type="number" id="volumeInfus" placeholder="Contoh: 500">
+                    <input type="number" id="volumeInfus" placeholder="Contoh: 500" min="1">
+                    <p class="error-msg">Volume harus lebih dari 0</p>
                 </div>
                 <div class="form-group">
                     <label for="waktuInfus">Waktu Pemberian (jam):</label>
-                    <input type="number" id="waktuInfus" placeholder="Contoh: 8" step="0.5">
+                    <input type="number" id="waktuInfus" placeholder="Contoh: 8" step="0.5" min="0.5" max="48">
+                    <p class="error-msg">Waktu harus antara 0.5 - 48 jam</p>
                 </div>
                 <div class="form-group">
                     <label for="faktorTetes">Faktor Tetes (tetes/mL):</label>
                     <select id="faktorTetes">
-                        <option value="20">Makro (20 tetes/mL)</option>
-                        <option value="15">Makro (15 tetes/mL)</option>
-                        <option value="60">Mikro (60 tetes/mL)</option>
+                        <option value="20">Makro - 20 tetes/mL</option>
+                        <option value="15">Makro - 15 tetes/mL</option>
+                        <option value="60">Mikro - 60 tetes/mL</option>
                     </select>
+                    <p class="form-hint">Makro untuk dewasa, Mikro untuk anak/neonatus</p>
                 </div>
                 <button class="btn btn-primary" id="btnHitungInfus"><i class="fas fa-calculator"></i> Hitung Tetesan</button>
                 <div id="hasilInfus" style="display:none;"></div>
             </div>
         </div>
 
-        <!-- Tab: Konversi Satuan -->
+        <!-- Tab: Konversi -->
         <div class="tab-content" id="tab-konversi">
             <div class="card">
                 <h3><i class="fas fa-exchange-alt"></i> Konversi Satuan</h3>
-                <p style="color:var(--gray-500);margin-bottom:16px;">Konversi antar satuan dosis obat</p>
+                <p style="color:var(--gray-500);font-size:0.85rem;margin-bottom:18px;">Konversi antar satuan dosis obat</p>
                 <div class="form-group">
                     <label for="nilaiKonversi">Nilai:</label>
-                    <input type="number" id="nilaiKonversi" placeholder="Masukkan angka" step="any">
+                    <input type="number" id="nilaiKonversi" placeholder="Masukkan angka" step="any" min="0">
+                    <p class="error-msg">Masukkan nilai yang valid</p>
                 </div>
                 <div class="form-group">
                     <label for="dariSatuan">Dari:</label>
@@ -134,14 +147,21 @@
             </div>
         </div>
 
-        <!-- Tab: Latihan Soal -->
+
+        <!-- Tab: Latihan -->
         <div class="tab-content" id="tab-latihan">
             <div class="card">
                 <h3><i class="fas fa-brain"></i> Latihan Soal Hitungan</h3>
-                <p style="color:var(--gray-500);margin-bottom:16px;">Latih kemampuan menghitung dosis dan tetesan infus</p>
-                <div id="soalLatihan"></div>
+                <p style="color:var(--gray-500);font-size:0.85rem;margin-bottom:18px;">Latih kemampuan menghitung dosis dan tetesan infus dengan soal acak</p>
+                <div id="soalLatihan">
+                    <div class="empty-state">
+                        <i class="fas fa-calculator"></i>
+                        <h4>Klik tombol di bawah untuk memulai latihan</h4>
+                        <p>Soal akan diacak dari berbagai tipe hitungan keperawatan</p>
+                    </div>
+                </div>
                 <div class="form-group" id="jawabanGroup" style="display:none;">
-                    <label for="jawabanUser">Jawaban Anda:</label>
+                    <label for="jawabanUser">Jawaban Anda (angka):</label>
                     <input type="number" id="jawabanUser" placeholder="Masukkan jawaban" step="any">
                 </div>
                 <div class="btn-group">
@@ -152,6 +172,8 @@
             </div>
         </div>
     </div>
+
+    <div class="toast-container" id="toastContainer"></div>
 
     <footer class="footer">
         <div class="container">

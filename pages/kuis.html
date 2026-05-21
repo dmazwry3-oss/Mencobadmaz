@@ -3,58 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuis Keperawatan - NersLab</title>
+    <title>Kuis & Tryout UKOM - NersLab</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="../index.html" class="nav-logo">
-                <i class="fas fa-heartbeat"></i> NersLab
-            </a>
-            <button class="nav-toggle" id="navToggle">
-                <i class="fas fa-bars"></i>
-            </button>
+            <a href="../index.html" class="nav-logo"><i class="fas fa-heartbeat"></i> NersLab</a>
+            <button class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></button>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Beranda</a></li>
                 <li><a href="askep.html" class="nav-link"><i class="fas fa-file-medical"></i> Askep</a></li>
-                <li><a href="kuis.html" class="nav-link active"><i class="fas fa-question-circle"></i> Kuis</a></li>
+                <li><a href="kuis.html" class="nav-link active"><i class="fas fa-brain"></i> Kuis</a></li>
                 <li><a href="kalkulator.html" class="nav-link"><i class="fas fa-calculator"></i> Kalkulator</a></li>
                 <li><a href="osce.html" class="nav-link"><i class="fas fa-clipboard-check"></i> OSCE</a></li>
-                <li><a href="logbook.html" class="nav-link"><i class="fas fa-book"></i> Logbook</a></li>
+                <li><a href="logbook.html" class="nav-link"><i class="fas fa-book-medical"></i> Logbook</a></li>
             </ul>
         </div>
     </nav>
 
     <div class="page-header">
-        <h1><i class="fas fa-question-circle"></i> Kuis Keperawatan</h1>
-        <p>Bank soal per mata kuliah dengan pembahasan lengkap</p>
+        <h1><i class="fas fa-brain"></i> Kuis & Tryout UKOM</h1>
+        <p>Bank soal keperawatan dengan pembahasan lengkap dan statistik performa</p>
     </div>
 
+
     <div class="page-content">
-        <!-- Category Selection -->
+        <!-- Quiz Setup -->
         <div class="card" id="quizSetup">
-            <h3><i class="fas fa-list"></i> Pilih Mata Kuliah</h3>
+            <h3><i class="fas fa-cog"></i> Pengaturan Kuis</h3>
             <div class="form-group">
-                <label for="quizCategory">Kategori:</label>
+                <label for="quizCategory">Kategori Mata Kuliah:</label>
                 <select id="quizCategory">
-                    <option value="">-- Pilih Mata Kuliah --</option>
+                    <option value="">-- Pilih Kategori --</option>
                     <option value="kmb">Keperawatan Medikal Bedah (KMB)</option>
                     <option value="anak">Keperawatan Anak</option>
                     <option value="maternitas">Keperawatan Maternitas</option>
                     <option value="jiwa">Keperawatan Jiwa</option>
                     <option value="komunitas">Keperawatan Komunitas</option>
+                    <option value="gerontik">Keperawatan Gerontik</option>
                     <option value="gadar">Gawat Darurat</option>
+                    <option value="manajemen">Manajemen Keperawatan</option>
                     <option value="farmakologi">Farmakologi</option>
-                    <option value="dasar">Keperawatan Dasar</option>
+                    <option value="etika">Etika & Hukum Keperawatan</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="quizMode">Mode:</label>
                 <select id="quizMode">
-                    <option value="latihan">Latihan (lihat jawaban langsung)</option>
-                    <option value="tryout">Tryout (lihat skor di akhir)</option>
+                    <option value="latihan">Latihan (lihat pembahasan langsung)</option>
+                    <option value="tryout">Tryout UKOM (timer + skor di akhir)</option>
+                </select>
+            </div>
+            <div class="form-group" id="timerSetting" style="display:none;">
+                <label for="quizTime">Waktu per soal (detik):</label>
+                <select id="quizTime">
+                    <option value="60">60 detik</option>
+                    <option value="90" selected>90 detik</option>
+                    <option value="120">120 detik</option>
+                    <option value="0">Tanpa batas waktu</option>
                 </select>
             </div>
             <button class="btn btn-primary btn-lg" id="btnStartQuiz" disabled>
@@ -62,46 +71,49 @@
             </button>
         </div>
 
+
         <!-- Quiz Progress -->
         <div class="card" id="quizProgress" style="display:none;">
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
-                <span id="quizInfo" class="badge badge-high"></span>
-                <span id="quizCounter"></span>
+                <span class="badge badge-primary" id="quizInfo"></span>
+                <span id="quizCounter" style="font-weight:600;font-size:0.85rem;color:var(--gray-600);"></span>
+                <span id="quizTimer" class="badge badge-warning" style="display:none;"></span>
             </div>
             <div class="progress-bar" style="margin-top:12px;">
                 <div class="progress-fill" id="quizProgressBar" style="width:0%"></div>
             </div>
         </div>
 
-        <!-- Question Display -->
+        <!-- Question Card -->
         <div class="card" id="questionCard" style="display:none;">
-            <div id="questionText" style="font-size:1.05rem;margin-bottom:20px;line-height:1.7;"></div>
+            <div id="questionText" style="font-size:1rem;margin-bottom:20px;line-height:1.7;color:var(--gray-800);"></div>
             <div id="optionsContainer"></div>
             <div id="explanationBox" class="alert alert-info" style="display:none;margin-top:16px;"></div>
             <div class="btn-group" style="margin-top:20px;">
-                <button class="btn btn-primary" id="btnNext" style="display:none;">
-                    <i class="fas fa-arrow-right"></i> Soal Berikutnya
-                </button>
+                <button class="btn btn-primary" id="btnNext" style="display:none;">Soal Berikutnya <i class="fas fa-arrow-right"></i></button>
             </div>
         </div>
 
         <!-- Quiz Result -->
         <div class="card" id="quizResult" style="display:none;">
             <div class="score-display">
-                <div class="score-number" id="finalScore">0</div>
+                <div class="score-number" id="finalScore">0/0</div>
                 <div class="score-label">Skor Akhir</div>
             </div>
             <div class="progress-bar" style="margin:20px 0;">
                 <div class="progress-fill" id="resultBar" style="width:0%"></div>
             </div>
-            <div id="resultSummary" style="text-align:center;margin-bottom:20px;"></div>
-            <div id="resultDetails"></div>
-            <div class="btn-group" style="justify-content:center;margin-top:20px;">
+            <div id="resultGrade" style="text-align:center;margin-bottom:20px;"></div>
+            <div id="resultStats"></div>
+            <div id="resultDetails" style="margin-top:20px;"></div>
+            <div class="btn-group" style="justify-content:center;margin-top:24px;">
                 <button class="btn btn-primary" id="btnRetry"><i class="fas fa-redo"></i> Ulangi Kuis</button>
-                <button class="btn btn-outline" id="btnBackToMenu"><i class="fas fa-list"></i> Pilih Kategori Lain</button>
+                <button class="btn btn-outline" id="btnBackToMenu"><i class="fas fa-list"></i> Kategori Lain</button>
             </div>
         </div>
     </div>
+
+    <div class="toast-container" id="toastContainer"></div>
 
     <footer class="footer">
         <div class="container">

@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NersLab - Latihan Askep, OSCE & Kuis Keperawatan</title>
+    <title>NersLab - Platform Belajar Keperawatan Indonesia</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar">
@@ -19,83 +20,111 @@
             <ul class="nav-menu" id="navMenu">
                 <li><a href="index.html" class="nav-link active"><i class="fas fa-home"></i> Beranda</a></li>
                 <li><a href="pages/askep.html" class="nav-link"><i class="fas fa-file-medical"></i> Askep</a></li>
-                <li><a href="pages/kuis.html" class="nav-link"><i class="fas fa-question-circle"></i> Kuis</a></li>
+                <li><a href="pages/kuis.html" class="nav-link"><i class="fas fa-brain"></i> Kuis</a></li>
+
                 <li><a href="pages/kalkulator.html" class="nav-link"><i class="fas fa-calculator"></i> Kalkulator</a></li>
                 <li><a href="pages/osce.html" class="nav-link"><i class="fas fa-clipboard-check"></i> OSCE</a></li>
-                <li><a href="pages/logbook.html" class="nav-link"><i class="fas fa-book"></i> Logbook</a></li>
+                <li><a href="pages/logbook.html" class="nav-link"><i class="fas fa-book-medical"></i> Logbook</a></li>
             </ul>
         </div>
     </nav>
 
     <main class="hero">
         <div class="hero-content">
-            <h1><i class="fas fa-heartbeat"></i> NersLab</h1>
-            <p class="hero-subtitle">Platform Latihan Askep, OSCE & Kuis untuk Mahasiswa Keperawatan</p>
-            <p class="hero-desc">Belajar asuhan keperawatan, latihan kasus klinis, simulasi OSCE, hitung dosis obat, dan kuis UKOM dalam satu tempat.</p>
+            <div class="hero-badge"><i class="fas fa-graduation-cap"></i> Platform Edukasi Keperawatan #1</div>
+            <h1>Belajar Askep, OSCE, dan UKOM Keperawatan dalam Satu Tempat</h1>
+            <p class="hero-subtitle">Latihan kasus klinis, dokumentasi SDKI-SLKI-SIKI, kuis keperawatan, kalkulator obat, dan logbook praktik klinik untuk membantu mahasiswa keperawatan belajar lebih terarah.</p>
+            <div class="hero-cta">
+                <a href="pages/askep.html" class="btn btn-white btn-lg"><i class="fas fa-file-medical"></i> Mulai Latihan Askep</a>
+                <a href="pages/kuis.html" class="btn btn-outline btn-lg" style="border-color:rgba(255,255,255,0.4);color:#fff;"><i class="fas fa-brain"></i> Coba Kuis UKOM</a>
+                <a href="pages/kalkulator.html" class="btn btn-outline btn-lg" style="border-color:rgba(255,255,255,0.4);color:#fff;"><i class="fas fa-calculator"></i> Hitung Dosis Obat</a>
+            </div>
         </div>
     </main>
 
+
+    <section class="stats-bar">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">7+</div>
+                <div class="stat-label">Kasus Askep</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Soal Kuis</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Station OSCE</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">35</div>
+                <div class="stat-label">Checklist Kompetensi</div>
+            </div>
+        </div>
+    </section>
+
     <section class="features">
         <div class="container">
-            <h2 class="section-title">Fitur Utama</h2>
+            <div class="section-header">
+                <h2>Fitur Lengkap untuk Mahasiswa Keperawatan</h2>
+                <p>Semua kebutuhan belajar klinik dalam satu platform yang mudah diakses kapan saja.</p>
+            </div>
             <div class="feature-grid">
                 <a href="pages/askep.html" class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-file-medical"></i></div>
+                    <div class="feature-icon icon-blue"><i class="fas fa-file-medical"></i></div>
                     <h3>Askep Case Generator</h3>
-                    <p>Latihan dokumentasi asuhan keperawatan dengan bank kasus pasien. Isi data subjektif, objektif, diagnosis, intervensi, dan evaluasi SOAP.</p>
-                    <span class="badge badge-high">Prioritas Tinggi</span>
+                    <p>Latihan dokumentasi asuhan keperawatan berbasis SDKI, SLKI, SIKI dengan bank kasus klinis. Pengkajian hingga evaluasi SOAP secara guided step-by-step.</p>
+                    <span class="feature-tag tag-high"><i class="fas fa-fire"></i> Prioritas Tinggi</span>
                 </a>
                 <a href="pages/kuis.html" class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-question-circle"></i></div>
-                    <h3>Kuis Keperawatan</h3>
-                    <p>Bank soal per mata kuliah: KMB, Anak, Maternitas, Jiwa, Komunitas, Gawat Darurat, Farmakologi, dan Keperawatan Dasar.</p>
-                    <span class="badge badge-high">Prioritas Tinggi</span>
+                    <div class="feature-icon icon-purple"><i class="fas fa-brain"></i></div>
+                    <h3>Kuis & Tryout UKOM</h3>
+                    <p>Bank soal 10 kategori mata kuliah keperawatan. Mode latihan dan tryout dengan timer, pembahasan lengkap, dan statistik performa belajar.</p>
+                    <span class="feature-tag tag-high"><i class="fas fa-fire"></i> Prioritas Tinggi</span>
                 </a>
+
                 <a href="pages/kalkulator.html" class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-calculator"></i></div>
+                    <div class="feature-icon icon-orange"><i class="fas fa-calculator"></i></div>
                     <h3>Kalkulator Obat & Infus</h3>
-                    <p>Hitung dosis obat, tetesan infus, konversi satuan, dan latihan soal acak dengan penjelasan langkah-langkah.</p>
-                    <span class="badge badge-high">Prioritas Tinggi</span>
+                    <p>Hitung dosis obat, tetesan infus, konversi satuan dengan penjelasan langkah-langkah. Latihan soal acak untuk mengasah kemampuan hitungan.</p>
+                    <span class="feature-tag tag-high"><i class="fas fa-fire"></i> Prioritas Tinggi</span>
                 </a>
                 <a href="pages/osce.html" class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-clipboard-check"></i></div>
+                    <div class="feature-icon icon-green"><i class="fas fa-clipboard-check"></i></div>
                     <h3>Simulasi OSCE</h3>
-                    <p>Timer station, checklist tindakan keperawatan, mode latihan & ujian, dengan rubrik penilaian otomatis.</p>
-                    <span class="badge badge-med">Prioritas Sedang</span>
+                    <p>Timer station, checklist tindakan keperawatan lengkap, mode latihan dan ujian, dengan rubrik penilaian dan feedback otomatis.</p>
+                    <span class="feature-tag tag-med"><i class="fas fa-clock"></i> Tersedia</span>
                 </a>
                 <a href="pages/logbook.html" class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-book"></i></div>
+                    <div class="feature-icon icon-pink"><i class="fas fa-book-medical"></i></div>
                     <h3>Logbook Praktik Klinik</h3>
-                    <p>Catatan aktivitas praktik, checklist kompetensi, refleksi harian, dan export laporan digital.</p>
-                    <span class="badge badge-med">Prioritas Sedang</span>
-                </a>
-                <a href="#" class="feature-card feature-coming">
-                    <div class="feature-icon"><i class="fas fa-star"></i></div>
-                    <h3>Premium (Segera)</h3>
-                    <p>Semua kasus askep, tryout lengkap, export PDF, OSCE checklist premium, dan pembahasan detail.</p>
-                    <span class="badge badge-soon">Segera Hadir</span>
+                    <p>Catatan aktivitas praktik, checklist 35 kompetensi klinik, refleksi model Gibbs, export PDF/CSV, data tersimpan aman di browser.</p>
+                    <span class="feature-tag tag-med"><i class="fas fa-clock"></i> Tersedia</span>
                 </a>
             </div>
         </div>
     </section>
 
-    <section class="disclaimer">
-        <div class="container">
-            <p><i class="fas fa-exclamation-triangle"></i> <strong>Disclaimer:</strong> Web ini untuk edukasi mahasiswa keperawatan, bukan pengganti arahan dosen, pembimbing klinik, atau keputusan medis profesional. Rujukan standar menggunakan SDKI, SLKI, SIKI sebagai acuan pembelajaran.</p>
+    <section style="padding:0 20px 60px;">
+        <div class="disclaimer">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p><strong>Disclaimer:</strong> NersLab adalah platform edukasi untuk mahasiswa keperawatan, bukan pengganti arahan dosen, pembimbing klinik, atau keputusan medis profesional. Materi mengacu pada standar SDKI, SLKI, SIKI sebagai rujukan pembelajaran.</p>
         </div>
     </section>
 
     <footer class="footer">
         <div class="container">
             <p>&copy; 2026 NersLab. Platform Edukasi Mahasiswa Keperawatan Indonesia.</p>
-            <p class="footer-links">
-                <a href="#">Tentang</a> | <a href="#">Kontak</a> | <a href="#">Kebijakan Privasi</a>
-            </p>
+            <div class="footer-links">
+                <a href="#">Tentang</a>
+                <a href="#">Kontak</a>
+                <a href="#">Kebijakan Privasi</a>
+            </div>
         </div>
     </footer>
 
     <script>
-        // Mobile nav toggle
         document.getElementById('navToggle').addEventListener('click', () => {
             document.getElementById('navMenu').classList.toggle('active');
         });
