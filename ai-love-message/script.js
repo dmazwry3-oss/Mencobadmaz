@@ -1,11 +1,14 @@
 /* ============================================
    AI Love Message Generator - Main Script
-   Handles form, API calls, sharing, localStorage
+   Langsung memanggil Gemini API dari frontend
+   Deploy di GitHub Pages (static site)
    ============================================ */
 
 // ============ CONFIGURATION ============
-// Ganti URL ini dengan endpoint Cloudflare Worker kamu
-const WORKER_ENDPOINT = 'https://love-message-worker.YOUR_USERNAME.workers.dev/generate';
+// API Key Gemini
+const GEMINI_API_KEY = 'AIzaSyD-lLz12FRQ4jqgXdPBVo-ZzREQRvTcStg';
+const GEMINI_MODEL = 'gemini-2.0-flash';
+const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
 
 // ============ DOM ELEMENTS ============
 const formSection = document.getElementById('formSection');
@@ -99,12 +102,10 @@ document.addEventListener('DOMContentLoaded', () => {
 function initFloatingElements() {
     const emojis = ['💖', '💕', '✨', '🌟', '💝', '💗', '⭐', '🦋', '🌸', '💫'];
     
-    // Create initial batch
     for (let i = 0; i < 15; i++) {
         setTimeout(() => createFloatItem(emojis), i * 800);
     }
     
-    // Continuously add new ones
     setInterval(() => {
         if (document.querySelectorAll('.float-item').length < 20) {
             createFloatItem(emojis);
@@ -122,7 +123,6 @@ function createFloatItem(emojis) {
     item.style.animationDelay = Math.random() * 2 + 's';
     floatingElements.appendChild(item);
     
-    // Remove after animation ends
     setTimeout(() => {
         if (item.parentNode) {
             item.parentNode.removeChild(item);
@@ -136,11 +136,8 @@ function initThemeSelector() {
     
     themeOptions.forEach(option => {
         option.addEventListener('click', () => {
-            // Remove active from all
             themeOptions.forEach(o => o.classList.remove('active'));
-            // Add active to clicked
             option.classList.add('active');
-            // Update theme
             currentTheme = option.dataset.theme;
             applyTheme(currentTheme);
         });
@@ -148,7 +145,6 @@ function initThemeSelector() {
 }
 
 function applyTheme(theme) {
-    // Remove all theme classes
     document.body.classList.remove('theme-night-sky', 'theme-cute-sticker', 'theme-elegant-letter');
     
     switch (theme) {
@@ -161,7 +157,6 @@ function applyTheme(theme) {
         case 'Elegant Letter':
             document.body.classList.add('theme-elegant-letter');
             break;
-        // Pink Love is default, no class needed
     }
 }
 
@@ -169,7 +164,6 @@ function applyTheme(theme) {
 function initFormHandlers() {
     messageForm.addEventListener('submit', handleFormSubmit);
     
-    // Clear errors on input
     recipientInput.addEventListener('input', () => clearError('recipient'));
     relationshipSelect.addEventListener('change', () => clearError('relationship'));
     moodSelect.addEventListener('change', () => clearError('mood'));
@@ -232,54 +226,150 @@ async function handleFormSubmit(e) {
         theme: currentTheme
     };
     
-    // Show loading
     showLoading();
     
     try {
-        const response = await fetchMessage(formData);
-        
-        if (response.success && response.data) {
-            displayResult(response.data, formData);
-        } else {
-            // Use fallback if API returns error
-            const fallback = getFallbackMessage(formData.recipientName);
-            displayResult(fallback, formData);
-        }
+        const data = await callGeminiAPI(formData);
+        displayResult(data, formData);
     } catch (error) {
         console.error('Error generating message:', error);
-        // Use fallback on network/API error
         const fallback = getFallbackMessage(formData.recipientName);
         displayResult(fallback, formData);
         showToast('Menggunakan pesan template (API sedang sibuk) 💫');
     }
 }
 
-// ============ API CALL ============
-async function fetchMessage(formData) {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
+// ============ GEMINI API CALL (LANGSUNG DARI FRONTEND) ============
+async function callGeminiAPI(formData) {
+    const { recipientName, senderName, relationship, mood, theme } = formData;
     
+    // Buat prompt
+    const prompt = `Kamu adalah penulis pesan personal berbahasa Indonesia. Buatkan pesan yang natural, manis, emosional, dan tidak terdengar seperti AI.
+
+Data:
+- Nama penerima: ${recipientName}
+- Nama pengirim: ${senderName || '(tidak disebutkan)'}
+- Hubungan: ${relationship}
+- Mood: ${mood}
+- Tema visual: ${theme}
+
+Aturan:
+- Bahasa Indonesia natural.
+- Jangan terlalu lebay.
+- Jangan vulgar.
+- Jangan seksual.
+- Jangan menyebut AI.
+- Maksimal 90 kata untuk pesan utama.
+- Buat terasa personal, hangat, dan cocok dibagikan ke pasangan atau sahabat.
+- Kalau nama pengirim kosong atau "(tidak disebutkan)", jangan sebut nama pengirim.
+- Output harus valid JSON saja tanpa markdown.
+
+Format JSON:
+{
+  "title": "Untuk ...",
+  "opening": "...",
+  "message": "...",
+  "closing": "...",
+  "buttonText": "..."
+}`;
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 20000); // 20s timeout
+
     try {
-        const response = await fetch(WORKER_ENDPOINT, {
+        const response = await fetch(GEMINI_ENDPOINT, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{
+                        text: prompt
+                    }]
+                }],
+                generationConfig: {
+                    temperature: 0.9,
+                    topP: 0.95,
+                    topK: 40,
+                    maxOutputTokens: 500,
+                    responseMimeType: "application/json"
+                },
+                safetySettings: [
+                    { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+                    { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+                    { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_LOW_AND_ABOVE" },
+                    { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" }
+                ]
+            }),
             signal: controller.signal
         });
-        
+
         clearTimeout(timeoutId);
-        
+
         if (!response.ok) {
-            throw new Error(`HTTP error: ${response.status}`);
+            throw new Error(`Gemini API error: ${response.status}`);
         }
-        
-        return await response.json();
+
+        const result = await response.json();
+
+        // Extract text dari response Gemini
+        const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        if (!text) {
+            throw new Error('No text in Gemini response');
+        }
+
+        // Parse JSON dari response
+        const parsed = parseGeminiJSON(text);
+
+        if (parsed) {
+            return parsed;
+        }
+
+        throw new Error('Failed to parse Gemini JSON');
+
     } catch (error) {
         clearTimeout(timeoutId);
         throw error;
     }
+}
+
+// ============ PARSE GEMINI JSON ============
+function parseGeminiJSON(text) {
+    try {
+        // Coba parse langsung
+        const data = JSON.parse(text);
+        if (data.title && data.message) {
+            return {
+                title: data.title || 'Untuk Kamu',
+                opening: data.opening || 'Ada pesan untukmu...',
+                message: data.message || '',
+                closing: data.closing || 'Dengan cinta.',
+                buttonText: data.buttonText || '💝 Buka Kejutan'
+            };
+        }
+    } catch (e) {
+        // Jika gagal, coba extract JSON dari text
+        try {
+            const jsonMatch = text.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+                const data = JSON.parse(jsonMatch[0]);
+                if (data.title && data.message) {
+                    return {
+                        title: data.title || 'Untuk Kamu',
+                        opening: data.opening || 'Ada pesan untukmu...',
+                        message: data.message || '',
+                        closing: data.closing || 'Dengan cinta.',
+                        buttonText: data.buttonText || '💝 Buka Kejutan'
+                    };
+                }
+            }
+        } catch (e2) {
+            console.error('Failed to parse Gemini JSON:', e2);
+        }
+    }
+    return null;
 }
 
 // ============ FALLBACK MESSAGE ============
@@ -287,7 +377,6 @@ function getFallbackMessage(recipientName) {
     const randomIdx = Math.floor(Math.random() * fallbackMessages.length);
     const template = { ...fallbackMessages[randomIdx] };
     
-    // Replace {name} placeholder
     template.title = template.title.replace('{name}', recipientName);
     template.message = template.message.replace('{name}', recipientName);
     
@@ -298,29 +387,23 @@ function getFallbackMessage(recipientName) {
 function displayResult(data, formData) {
     currentResult = { ...data, formData };
     
-    // Apply theme for result view
     applyTheme(formData ? formData.theme : currentTheme);
     
-    // Populate result card
     resultTitle.textContent = data.title || `Untuk ${formData?.recipientName || 'Kamu'}`;
     resultOpening.textContent = data.opening || 'Ada pesan kecil untukmu...';
     resultMessage.innerHTML = `<p>${escapeHtml(data.message || 'Kamu istimewa.')}</p>`;
     resultClosing.textContent = data.closing || 'Dengan cinta.';
     btnSurprise.textContent = data.buttonText || '💝 Buka Kejutan';
     
-    // Reset surprise
     surpriseContent.style.display = 'none';
     btnSurprise.style.display = 'inline-flex';
     
-    // Hide loading, show result
     hideLoading();
     formSection.style.display = 'none';
     resultSection.style.display = 'block';
     
-    // Save to localStorage
     saveResult(currentResult);
     
-    // Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -349,26 +432,19 @@ function hideLoading() {
 
 // ============ ACTION BUTTONS ============
 function initActionButtons() {
-    // Surprise button
     btnSurprise.addEventListener('click', () => {
         surpriseContent.style.display = 'block';
         btnSurprise.style.display = 'none';
-        
-        // Add burst of emojis
         triggerCelebration();
     });
     
-    // Copy message
     btnCopy.addEventListener('click', () => {
         if (!currentResult) return;
-        
         const text = `${currentResult.title}\n\n${currentResult.opening}\n\n${currentResult.message}\n\n${currentResult.closing}`;
-        
         copyToClipboard(text);
         showToast('Pesan berhasil disalin! 📋');
     });
     
-    // Create shareable link
     btnLink.addEventListener('click', () => {
         if (!currentResult) return;
         
@@ -389,19 +465,16 @@ function initActionButtons() {
         showToast('Link berhasil dibuat! 🔗');
     });
     
-    // Copy link
     btnCopyLink.addEventListener('click', () => {
         copyToClipboard(shareLink.value);
         showToast('Link berhasil disalin! ✅');
     });
     
-    // Share WhatsApp
     btnWhatsApp.addEventListener('click', () => {
         if (!currentResult) return;
         
         const text = `💌 ${currentResult.title}\n\n${currentResult.opening}\n\n${currentResult.message}\n\n${currentResult.closing}`;
         
-        // Also try to include link
         let shareUrl = '';
         if (shareLink.value) {
             shareUrl = `\n\n🔗 Buka pesan lengkap: ${shareLink.value}`;
@@ -411,7 +484,6 @@ function initActionButtons() {
         window.open(waUrl, '_blank');
     });
     
-    // Reset
     btnReset.addEventListener('click', () => {
         resetToForm();
     });
@@ -435,18 +507,12 @@ function checkShareableLink() {
                 formData: { theme: decoded.th || 'Pink Love' }
             };
             
-            // Enter view mode (hide form)
             document.body.classList.add('view-mode');
-            
-            // Apply theme from shared link
             applyTheme(decoded.th || 'Pink Love');
-            
-            // Display the shared message
             displayResult(data, { theme: decoded.th || 'Pink Love' });
             
         } catch (error) {
             console.error('Error parsing shared link:', error);
-            // Just show normal form if link is invalid
         }
     }
 }
@@ -461,7 +527,6 @@ function saveResult(result) {
 }
 
 function loadLastResult() {
-    // Don't load if we're viewing a shared link
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('msg')) return;
     
@@ -469,7 +534,6 @@ function loadLastResult() {
         const saved = localStorage.getItem('lastLoveMessage');
         if (saved) {
             const result = JSON.parse(saved);
-            // Don't auto-display, but keep in state for reference
             currentResult = result;
         }
     } catch (e) {
@@ -486,24 +550,19 @@ function resetToForm() {
     surpriseContent.style.display = 'none';
     btnSurprise.style.display = 'inline-flex';
     
-    // Reset form
     messageForm.reset();
     
-    // Reset theme to default
     document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active'));
     document.querySelector('.theme-option[data-theme="Pink Love"]').classList.add('active');
     applyTheme('Pink Love');
     currentTheme = 'Pink Love';
     
-    // Remove view mode
     document.body.classList.remove('view-mode');
     
-    // Clear URL params
     if (window.location.search) {
         window.history.replaceState({}, '', window.location.pathname);
     }
     
-    // Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
